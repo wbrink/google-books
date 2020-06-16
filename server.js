@@ -21,9 +21,9 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Define API routes here
-app.get(require("./routes/api-routes"));
+app.use(require("./routes/api-routes"));
 
-// Send every other request to the React app
+// Send every other request to the React app (necessary for react router dom)
 // Define any API routes before this runs
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
