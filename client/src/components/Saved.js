@@ -3,60 +3,43 @@ import API from "../utils/API";
 import Button from "../components/Button";
 import {BookContext} from "../App";
 
-function Search(props) {
+function Saved(props) {
 
-  const {saved, setSaved} = useContext(BookContext);
-  console.log(saved);
-  const showResults = () => {
-    return (
-      saved.map(el => {
-        const id = el._id;
-        const title = el.title;
-        const authors = el.authors; // array
-        const image = el.image;
-        const description = el.description;
-        const link = el.link;
-        
-        return(
+  const {saved,setSaved} = useContext(BookContext);
+
+  // const [reload, setReload] = useState(false);
+  
+  const bookBurner = (e,id) => {
+    API.deleteBook(id)
+      .then(res => res.json())
+      .then(data => {
+        if (data == false) {
+          console.log("delete failed")
+        } else {
+          console.log('book deleted');
           
-          <div>
-            <br/>
-            {/* title */}
-            <h3>{title}</h3>
+          const index = saved.findIndex(elem => elem._id === id);
+          saved.splice(index, 1);
+          if (saved.length === 0) {
+            setSaved([])
+          } else {
+            setSaved([...saved]);
+          }
+          
 
-            {/* authors */}
-            {authors ? authors.map(el => {return(<h5>Written By: {el}</h5>)}) : "" }
-            
-
-            {/* thumbnail of book */}
-            <img src={image} alt="image of book"/>
-
-            {/* description */}
-            <p>{description}</p>
-
-            <Button id={id} title={title} authors={authors} description={description} image={image} link={link}/>
-            <a href={link}>View</a>
-
-            
-            <br/>
-            <hr/>
-            <br/>
-          </div>
-        )
-    })
-    )
+        }
+      })
   }
 
-
+  
   return (
     <div>
-      {showResults()}
+      {saved.length > 0 ? saved.map(el => {
+        return <div key={el._id}>{el._id} <button onClick={(e) => bookBurner(e, el._id)}>Burn Book</button></div>
+      }): ""}
     </div>
-
-
-    
   )
 }
 
 
-export default Search;
+export default Saved;

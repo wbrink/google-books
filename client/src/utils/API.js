@@ -27,5 +27,13 @@ export default {
 
   getSavedBooks: () => {
     return fetch("/api/getSavedBooks")
+  },
+
+  deleteBook: (id) => {
+    return fetch("/api/deleteBook", {
+      method: "DELETE",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({id: id})
+    })
   }
 }

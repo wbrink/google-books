@@ -19,15 +19,6 @@ function Search(props) {
   }
 
   
-  useEffect(() => {
-
-    API.getBook("harry potter")
-      .then(res => res.json()) 
-      .then(data => {
-        console.log(data);
-      })
-  }, []);
-
   const showResults = () => {
     return (
       results.items.map(el => {

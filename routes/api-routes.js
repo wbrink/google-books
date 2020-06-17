@@ -44,6 +44,17 @@ router.get("/api/getSavedBooks", (req,res) => {
   })
 })
 
+router.delete("/api/deleteBook", (req,res) => {
+  const id = req.body.id;
+  db.Book.findOneAndDelete({_id: id}, (err, doc) => {
+    if (err) {
+      res.json(false); 
+    } else {
+      res.json(doc);
+    }
+  })
+})
+
 
 
 module.exports = router;

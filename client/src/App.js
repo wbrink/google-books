@@ -18,39 +18,43 @@ function App() {
   const [saved, setSaved] = useState([]);
   
 
-
-
   useEffect(() => {
     API.getSavedBooks()
       .then(res => res.json())
       .then(data => {
         if (data == false) {
-          setSaved(false);
+          console.log(data);
         } else {
+          console.log("here");
           setSaved(data);
         }
         
       })
   }, [])
 
-  return (
-    <Router>
-      <BookContext.Provider value={{saved, setSaved}}>
-        <div> 
-          <Nav />
+    return (
+      <Router>
+        <BookContext.Provider value={{saved, setSaved}}>
+          <div> 
+            <Nav />
+            {/* <div>Books {saved.length}</div> */}
+            <Route exact path="/">
+              <Search />
+            </Route>
+  
+            <Route exact path="/saved">
+              <Saved />
+            </Route>
+          </div>
+        </BookContext.Provider>
+      </Router>
+    );
 
-          <Route exact path="/">
-            <Search />
-          </Route>
 
-          <Route exact path="/saved">
-            <Saved />
-          </Route>
-
-        </div>
-      </BookContext.Provider>
-    </Router>
-  );
+    
+  
 }
+
+
 
 export default App;
