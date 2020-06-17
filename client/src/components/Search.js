@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import API from "../utils/API";
+import Button from "../components/Button";
 
 function Search(props) {
   const [results, setResults] = useState(false);
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
 
   const searchGoogle = (title) => {
     API.getBook(title)
@@ -17,7 +18,9 @@ function Search(props) {
     searchGoogle(search);
   }
 
+  
   useEffect(() => {
+
     API.getBook("harry potter")
       .then(res => res.json()) 
       .then(data => {
@@ -28,17 +31,40 @@ function Search(props) {
   const showResults = () => {
     return (
       results.items.map(el => {
+        const id = el.id;
+        const title = el.volumeInfo.title;
+        const subtitle = el.volumeInfo.subtitle;
+        const authors = el.volumeInfo.authors; // array
+        const image = el.volumeInfo.imageLinks.thumbnail;
+        const description = el.volumeInfo.description;
+        const link = el.volumeInfo.infoLink;
+        
         return(
+          
           <div>
-            <h3>{el.volumeInfo.title}</h3>
-            {el.volumeInfo.subtitle ? <h5>{el.volumeInfo.subtitle}</h5> : "" }
-            {el.volumeInfo.authors.map(el => {
-              return(<h5>Written By: {el}</h5>)
-            })}
-            <img src={el.volumeInfo.imageLinks.thumbnail} alt="image of book"/>
-            <p>{el.volumeInfo.description}</p>
+            <br/>
+            {/* title */}
+            <h3>{title}</h3>
+
+            {/* subtitle */}
+            {subtitle ? <h5>{subtitle}</h5> : "" }
+
+            {/* authors */}
+            {authors ? authors.map(el => {return(<h5>Written By: {el}</h5>)}) : "" }
+            
+
+            {/* thumbnail of book */}
+            <img src={image} alt="image of book"/>
+
+            {/* description */}
+            <p>{description}</p>
+
+            <Button id={id} title={title} authors={authors} description={description} image={image} link={link}/>
+            <a href={link}>View</a>
+
             
             <br/>
+            <hr/>
             <br/>
           </div>
         )
@@ -49,13 +75,13 @@ function Search(props) {
 
   return (
     <div>
-      <input type="text" placeholder="Search Title Here" onChange={(e) => setSearch(e.target.value)} />
+      <input type="text" placeholder="Search Title Here" onChange={(e) => setSearch(e.target.value)} value={search} />
       <button onClick={handleSearchClick}>Search</button>
       <hr/>
 
       {
         results === false 
-          ? <div>Results will SHow here</div> 
+          ? <div>Results will Show here</div> 
           : <div>{showResults()}</div>
       }
     </div>

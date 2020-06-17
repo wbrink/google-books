@@ -1,6 +1,13 @@
 import React from "react";
 import "./style.css";
 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 function Nav() {
 
   return (
@@ -8,8 +15,12 @@ function Nav() {
       <h1>Google Books</h1>
       <nav>
         <ul>
-          <li>Search</li>
-          <li>Saved</li>
+          <li>
+            <Link to="/">Search</Link>
+          </li>
+          <li>
+            <Link to="/saved">Saved</Link>
+          </li>
         </ul>
       </nav>
     </header>

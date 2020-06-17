@@ -12,6 +12,8 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/googlebooks", {
   useFindAndModify: false
 })
 
+const mongoose_db = mongoose.connection;
+
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -29,6 +31,12 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
 
-app.listen(PORT, () => {
-  console.log(`🌎 ==> API server now on port ${PORT}!`);
-});
+
+mongoose_db.once("open", function() {
+  app.listen(PORT, () => {console.log("Server Listening on Port", PORT)});
+})
+
+
+mongoose_db.on("error", function() {
+  console.error("database failed to open");
+})
