@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import API from "../../utils/API";
 import { BookContext } from "../../App";
 
@@ -24,13 +24,47 @@ function Button({id, title, authors, description, image, link}) {
 
       setText("Delete");
     } else if (text === "Delete") {
-      // then delete the book from saved 
+      API.deleteBook(id)
+      .then(res => res.json())
+      .then(data => {
+        if (data == false) {
+          console.log("delete failed")
+        } else {
+          console.log('book deleted');
+          
+          const index = saved.findIndex(elem => elem._id === id);
+          saved.splice(index, 1);
+          if (saved.length === 0) {
+            setSaved([])
+            setText("Save");
+          } else {
+            setSaved([...saved]);
+            setText("Save");
+          }
+          
+
+        }
+      }) 
     }
   }
 
+  useEffect(() => {
+    // if book is in saved then delete
+    // else save
+    const index = saved.findIndex(elem => elem._id === id);
+
+    if (index === -1) {
+      setText("Save");
+    } else {
+      setText("Delete");
+    }
+  }, [])
+
+  
   return (
     <button onClick={handleClick}>{text}</button>    
   )
+
 }
 
 
