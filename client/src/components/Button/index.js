@@ -42,7 +42,6 @@ function Button({id, title, authors, description, image, link}) {
             setText("Save");
           }
           
-
         }
       }) 
     }
