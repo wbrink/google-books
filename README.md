@@ -2,5 +2,6 @@
 
 This project uses Express and React to search the google books api and be able to save books to a MongoDB database.
 
-Application URL
-![image of application](./public/employee_directory.PNG)
+https://google-books-123.herokuapp.com/
+
+![image of application](./app_image.PNG)
